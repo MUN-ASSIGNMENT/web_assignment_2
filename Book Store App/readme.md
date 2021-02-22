@@ -1,0 +1,1 @@
+before running `npm test`, make sure you have another terminal open and is running `node app.js`

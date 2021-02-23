@@ -108,7 +108,7 @@ describe('Testing the Book API', async function () {
         describe('Contacts', async () => {
             var myurl = 'http://localhost:3000/books';
 
-            it('Success 1 - POST /books, DELETE /books/:id', () => {
+            it('Success 1 - POST /books, DELETE /books/:id', async () => {
                
                 let data = {
                     id: 1,
@@ -119,7 +119,7 @@ describe('Testing the Book API', async function () {
                 }
 
                  // should create a new book using POST
-                request.post({
+                await request.post({
                     headers: { 'content-type': 'application/json' },
                     url: myurl,
                     body: JSON.stringify(data)
@@ -128,7 +128,7 @@ describe('Testing the Book API', async function () {
                 });
 
                 //then DELETE the same book
-                request.delete({
+                await request.delete({
                     headers: { 'content-type': 'application/json' },
                     url: myurl+"/1",
                     body: JSON.stringify(data)
@@ -136,7 +136,7 @@ describe('Testing the Book API', async function () {
                     assert.strictEqual(body, '{"msg":"The book was successfully deleted"}');
                 });
             });
-            it('Success 2 - POST /books, GET /books (retrieval greater than 1), DELETE /book/:id', function () {
+            it('Success 2 - POST /books, GET /books (retrieval greater than 1), DELETE /book/:id', async () => {
                 /* 
                 You should guarantee (using assert) that your book was created, then that the book count is greater than 1, and then it was deleted. */
                 let data = {
@@ -148,7 +148,7 @@ describe('Testing the Book API', async function () {
                 }
 
                 // should create a new book using POST
-                request.post({
+                await request.post({
                     headers: { 'content-type': 'application/json' },
                     url: myurl,
                     body: JSON.stringify(data)
@@ -157,93 +157,21 @@ describe('Testing the Book API', async function () {
                 });
 
                 //then query all books using a GET request
-                request.get({
+                await request.get({
                     headers: { 'content-type': 'application/json' },
                     url: myurl
                 }, (error, response, body) => {
-                    assert.strictEqual(body, '{"msg":"The book was successfully saved in the database"}');
+                    assert.strictEqual(response, '{"msg":"The book was successfully saved in the database"}');
                 });
 
                 //then DELETE the same book
-                request.delete({
+                await request.delete({
                     headers: { 'content-type': 'application/json' },
                     url: myurl+"/1",
                     body: JSON.stringify(data)
                 }, (error, response, body) => {
                     assert.strictEqual(body, '{"msg":"The book was successfully deleted"}');
                 });
-            });
-            it('Success 3 - POST /books, GET /books/:id, DELETE /book/:id', function () {
-                /*  You should guarantee (using assert) that your book was created, 
-                then that the fields of the retrieved book with GET are all the same, and then it was deleted. */
-                let data = {
-                    id: 1,
-                    name: "Harry",
-                    authors: "JK",
-                    year: 2010,
-                    publisher: "Nort"
-                }
-                
-                // should create a new book using POST
-                request.post({
-                    headers: { 'content-type': 'application/json' },
-                    url: myurl,
-                    body: JSON.stringify(data)
-                }, (error, response, body) => {
-                    assert.strictEqual(body, '{"msg":"The book was successfully saved in the database"}');
-                });
-
-                //query this book by id using a GET request
-
-
-                //then DELETE the same book
-                request.delete({
-                    headers: { 'content-type': 'application/json' },
-                    url: myurl+"/1",
-                    body: JSON.stringify(data)
-                }, (error, response, body) => {
-                    assert.strictEqual(body, '{"msg":"The book was successfully deleted"}');
-                });
-            });
-            it('Success 4 - POST /books, PUT /books/:id, GET /books/:id, DELETE /book/:id', function () {
-                /* You should guarantee (using assert) that your book was created, 
-                then updated, and when retrieved that the fields of the book changed, and finally that it was deleted. */
-                let data = {
-                    id: 1,
-                    name: "Harry",
-                    authors: "JK",
-                    year: 2010,
-                    publisher: "Nort"
-                }
-
-                // should create a new book using POST
-                request.post({
-                    headers: { 'content-type': 'application/json' },
-                    url: myurl,
-                    body: JSON.stringify(data)
-                }, (error, response, body) => {
-                    assert.strictEqual(body, '{"msg":"The book was successfully saved in the database"}');
-                });
-
-                //modify the data of this book with PUT
-
-
-                //then query this book by id using a GET request
-
-                //then DELETE the same book
-                request.delete({
-                    headers: { 'content-type': 'application/json' },
-                    url: myurl+"/1",
-                    body: JSON.stringify(data)
-                }, (error, response, body) => {
-                    assert.strictEqual(body, '{"msg":"The book was successfully deleted"}');
-                });
-            });
-            it('Success 5 - (Optional) Open', function () {
-
-            });
-            it('Success 6 - (Optional) Open', function () {
-
             });
         })
     });

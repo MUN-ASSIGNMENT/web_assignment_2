@@ -33,22 +33,22 @@ async function run() {
     let authors2 = "JK"
     let year2 = 2010
     let publisher2 = "Nort"
-    await book.update(collection_save, _id, name2, authors2, year2, publisher2).then(obj => {
+    await Book.update(collection_save, _id, name2, authors2, year2, publisher2).then(obj => {
         console.log(obj);
     }).catch(obj => {
         console.log(obj);
     });
-    await book.getBooks(collection_save).then(obj => {
+    await Book.getBooks(collection_save).then(obj => {
         console.log(obj);
     }).catch(obj => {
         console.log(obj);
     });
-    await book.delete(collection_save, 10).then(obj => {
+    await Book.delete(collection_save, 10).then(obj => {
         console.log(obj);
     }).catch(obj => {
         console.log(obj);
     });
-    await book.getBooks(collection_save).then(obj => {
+    await Book.getBooks(collection_save).then(obj => {
         console.log(obj);
     }).catch(obj => {
         console.log(obj);

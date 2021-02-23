@@ -2,7 +2,7 @@ const Validator = require("validatorjs")
 
 class Book {
 	constructor(id, name, authors, year, publisher) {
-		this.id = id
+		this._id = id //modified this to manually set id in mongodb
 		this.name = name
 		this.authors = authors
 		this.year = year
@@ -36,13 +36,23 @@ class Book {
 		});
 	};
 
-	static async update(db, id, name, authors, year, publisher) {
-		return new Promise(async function (resolve, reject) {
+	 async update(collection, id, name, authors, year, publisher) {
+		let updateBook = {
+			name: name,
+			authors: authors,
+			year: year,
+			publisher: publisher
+		}
+		return new Promise(async(resolve, reject) => {
 			/**
 			 * Write your code here
 			 * update: This method should update your object in the database 
 			 */
-
+			collection.updateOne({"_id": id}, {$set: updateBook}, (err, obj) => {
+				if (err) reject(err);
+				console.log(`${obj.modifiedCount} number of book is updated in the database`);
+				resolve({ msg: 'Book successfully updated in the database'});
+			});
 		});
 	};
 
@@ -69,12 +79,17 @@ class Book {
 		});
 	};
 
-	static async getBooks(db) {
-		return new Promise(async function (resolve, reject) {
+	 async getBooks(collection) {
+		return new Promise((resolve, reject) => {
 			/**
 			 * Write your code here
 			 * getBooks: This method should retrieve all books from the database.
 			 */
+			collection.find().toArray((err, obj) => {
+				if (err) reject(err);
+				console.log(`this book: ${obj.insertedId} is retrieved from the database`);	
+				resolve({ obj: obj, msg: 'Book was successfully retrieved from the database'});
+			});
 		});
 	};
 

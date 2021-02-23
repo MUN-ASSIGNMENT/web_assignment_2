@@ -12,7 +12,10 @@ async function _get_books_collection(db) {
         throw err;
     }
 };
-
+beforeEach(async () => {
+    const books = db.collection("books");
+    books.drop();
+  });
 // This method runs once and connects to the mongoDB
 before(async function () {
     try {
@@ -39,9 +42,10 @@ describe('Testing the Book API', async function () {
         let authors = "JK"
         let year = 2010
         let publisher = "Nort"
-        var book = new Book(id, name, authors, year, publisher);
+        
         it('Fail 1 - Test creation of a valid Book with parameters matching', function () {
-            assert.strictEqual(book.id, 1);
+            var book = new Book(id, name, authors, year, publisher);
+            assert.strictEqual(book._id, 1);
             assert.strictEqual(book.name, "Harry");
             assert.strictEqual(book.authors, "JK");
             assert.strictEqual(book.year, 2010);
@@ -70,7 +74,15 @@ describe('Testing the Book API', async function () {
             })
         });
         it('Success 2 - Test the update of a valid Book (Book.update) - Success Msg test', function () {
-
+            var book = new Book(id, name, authors, year, publisher);
+            let id2 = 1
+            let name2 = "Marry"
+            let authors2 = "JK"
+            let year2 = 2010
+            let publisher2 = "Nort"
+            return book.update(bookCollection, id2, name2, authors2, year2, publisher2).then((res) => {
+                assert.strictEqual(res.msg, 'Book successfully updated in the database');
+            })
         });
         it('Success 3 - Test the deletetion of a valid Book (Book.delete) - Success Msg test', function () {
 
@@ -84,25 +96,23 @@ describe('Testing the Book API', async function () {
     });
     describe('Testing the Book API - Complex Cases', () => {
         describe('Contacts', async () => {
-            var myurl = 'http://localhost:3000/books';           
-            it('Fail 1. POST - Test invalid name in the object', function(){
+            var myurl = 'http://localhost:3000/books';
+
+            it('Success 1 - POST /books, DELETE /books/:id', () => {
                 let data = {
-                    id: 1,
+                    id: 2,
                     name: "Harry",
                     authors: "JK",
                     year: 2010,
                     publisher: "Nort"
                 }
                 request.post({
-                        headers: {'content-type': 'application/json'},
-                        url:     myurl,
-                        body:    JSON.stringify(data)        
+                    headers: { 'content-type': 'application/json' },
+                    url: myurl,
+                    body: JSON.stringify(data)
                 }, (error, response, body) => {
                     assert.strictEqual(body, '{"msg":"The book was successfully saved in the database"}');
                 });
-            });
-            it('Success 1 - POST /books, DELETE /books/:id', () => {
-
             });
             it('Success 2 - POST /books, GET /books (retrieval greater than 1), DELETE /book/:id', function () {
 

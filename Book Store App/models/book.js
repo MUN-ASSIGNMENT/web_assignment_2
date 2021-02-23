@@ -66,7 +66,12 @@ class Book {
 			collection.deleteOne({_id: parseInt(id_delete)}, (err, obj) => {
                 if (err) reject('err');
                 console.log(`${obj.deletedCount} number of book is deleted in the database`);
-                resolve({msg: "The book was successfully deleted"})
+                if(obj.deletedCount <=0){
+					resolve({msg: "No book is deleted. The database is empty"})
+				}
+				else{
+					resolve({msg: "The book was successfully deleted"})
+				}
             });
 
 		});

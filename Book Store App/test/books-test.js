@@ -33,17 +33,17 @@ after(async function () {
 });
 
 describe('Testing the Book API', async function () {
-   /*  beforeEach(async () => {
-        const books = db.collection("books");
-        books.drop();
-      }); */
+    /*  beforeEach(async () => {
+         const books = db.collection("books");
+         books.drop();
+       }); */
     describe('Testing the Book Model - Simple cases', function () {
         let id = 1
         let name = "Harry"
         let authors = "JK"
         let year = 2010
         let publisher = "Nort"
-        
+
         it('Fail 1 - Test creation of a valid Book with parameters matching', function () {
             var book = new Book(id, name, authors, year, publisher);
             assert.strictEqual(book._id, 1);
@@ -105,74 +105,173 @@ describe('Testing the Book API', async function () {
         });
     });
     describe('Testing the Book API - Complex Cases', () => {
-        describe('Contacts', async () => {
+        describe('Contacts', () => {
             var myurl = 'http://localhost:3000/books';
-
-            it('Success 1 - POST /books, DELETE /books/:id', async () => {
-               
-                let data = {
-                    id: 1,
-                    name: "Harry",
-                    authors: "JK",
-                    year: 2010,
-                    publisher: "Nort"
-                }
-
-                 // should create a new book using POST
-                await request.post({
-                    headers: { 'content-type': 'application/json' },
-                    url: myurl,
-                    body: JSON.stringify(data)
-                }, (error, response, body) => {
-                    assert.strictEqual(body, '{"msg":"The book was successfully saved in the database"}');
-                });
-
-                //then DELETE the same book
-                await request.delete({
-                    headers: { 'content-type': 'application/json' },
-                    url: myurl+"/1",
-                    body: JSON.stringify(data)
-                }, (error, response, body) => {
-                    assert.strictEqual(body, '{"msg":"The book was successfully deleted"}');
-                });
+            let data = {
+                id: 1,
+                name: "Harry",
+                authors: "JK",
+                year: 2010,
+                publisher: "Nort"
+            }
+            describe('Success 1 - POST /books, DELETE /books/:id', () => {
+                it('POST /books', () => {
+                    // should create a new book using POST
+                    request.post({
+                        headers: { 'content-type': 'application/json' },
+                        url: myurl,
+                        body: JSON.stringify(data)
+                    }, (error, response, body) => {
+                        assert.strictEqual(body, '{"msg":"The book was successfully saved in the database"}');
+                    });
+                })
+                it('DELETE /books/:id', () => {
+                    //then DELETE the same book
+                    request.delete({
+                        headers: { 'content-type': 'application/json' },
+                        url: myurl + "/1",
+                        body: JSON.stringify(data)
+                    }, (error, response, body) => {
+                        assert.strictEqual(body, '{"msg":"The book was successfully deleted"}');
+                    });
+                })
             });
-            it('Success 2 - POST /books, GET /books (retrieval greater than 1), DELETE /book/:id', async () => {
-                /* 
-                You should guarantee (using assert) that your book was created, then that the book count is greater than 1, and then it was deleted. */
-                let data = {
-                    id: 1,
-                    name: "Harry",
-                    authors: "JK",
-                    year: 2010,
-                    publisher: "Nort"
-                }
+
+            describe('Success 2 - POST /books, GET /books (retrieval greater than 1), DELETE /book/:id', () => {
+                it('POST /books', () => {
+                    // should create a new book using POST
+                    request.post({
+                        headers: { 'content-type': 'application/json' },
+                        url: myurl,
+                        body: JSON.stringify(data)
+                    }, (error, response, body) => {
+                        assert.strictEqual(body, '{"msg":"The book was successfully saved in the database"}');
+                    });
+                })
+                /* it('GET /books (retrieval greater than 1', () => {
+                    request.get({
+                        headers: { 'content-type': 'application/json' },
+                        url: myurl + "/1"
+                    }, (error, response, body) => {
+                        assert.strictEqual(body, '{"obj":{"_id":1,"name":"Harry","authors":"JK","year":2010,"publisher":"Nort"},"msg":"Book was successfully retrieved from the database"}');
+                    });
+                }) */
+                it('DELETE /books/:id', () => {
+                    //then DELETE the same book
+                    request.delete({
+                        headers: { 'content-type': 'application/json' },
+                        url: myurl + "/1",
+                        body: JSON.stringify(data)
+                    }, (error, response, body) => {
+                        assert.strictEqual(body, '{"msg":"The book was successfully deleted"}');
+                    });
+                })
+            });
+
+            describe('Success 3 - POST /books, GET /books/:id, DELETE /book/:id', () => {
+                /*  You should guarantee (using assert) that your book was created, 
+               then that the fields of the retrieved book with GET are all the same, and then it was deleted. */
 
                 // should create a new book using POST
-                await request.post({
-                    headers: { 'content-type': 'application/json' },
-                    url: myurl,
-                    body: JSON.stringify(data)
-                }, (error, response, body) => {
-                    assert.strictEqual(body, '{"msg":"The book was successfully saved in the database"}');
-                });
+                it('POST /books', () => {
+                    request.post({
+                        headers: { 'content-type': 'application/json' },
+                        url: myurl,
+                        body: JSON.stringify(data)
+                    }, (error, response, body) => {
+                        assert.strictEqual(body, '{"msg":"The book was successfully saved in the database"}');
+                    });
+                })
 
-                //then query all books using a GET request
-                await request.get({
-                    headers: { 'content-type': 'application/json' },
-                    url: myurl
-                }, (error, response, body) => {
-                    assert.strictEqual(response, '{"msg":"The book was successfully saved in the database"}');
-                });
+                //query this book by id using a GET request
+                it('GET /books/:id', () => {
+                    request.get({
+                        headers: { 'content-type': 'application/json' },
+                        url: myurl + "/1"
+                    }, (error, response, body) => {
+                        assert.strictEqual(body, '{"obj":{"_id":1,"name":"Harry","authors":"JK","year":2010,"publisher":"Nort"},"msg":"Book was successfully retrieved from the database"}');
+                    });
+                })
 
-                //then DELETE the same book
-                await request.delete({
-                    headers: { 'content-type': 'application/json' },
-                    url: myurl+"/1",
-                    body: JSON.stringify(data)
-                }, (error, response, body) => {
-                    assert.strictEqual(body, '{"msg":"The book was successfully deleted"}');
-                });
+                it('DELETE /books/:id', () => {
+                    //then DELETE the same book
+                    request.delete({
+                        headers: { 'content-type': 'application/json' },
+                        url: myurl + "/1",
+                        body: JSON.stringify(data)
+                    }, (error, response, body) => {
+                        assert.strictEqual(body, '{"msg":"The book was successfully deleted"}');
+                    });
+                })
             });
-        })
+
+            describe('Success 4 - POST /books, PUT /books/:id, GET /books/:id, DELETE /book/:id', () => {
+                // should create a new book using POST
+                it('POST /books', () => {
+                    request.post({
+                        headers: { 'content-type': 'application/json' },
+                        url: myurl,
+                        body: JSON.stringify(data)
+                    }, (error, response, body) => {
+                        assert.strictEqual(body, '{"msg":"The book was successfully saved in the database"}');
+                    });
+                })
+
+                //query this book by id using a GET request
+                it('GET /books/:id', () => {
+                    request.get({
+                        headers: { 'content-type': 'application/json' },
+                        url: myurl + "/1"
+                    }, (error, response, body) => {
+                        assert.strictEqual(body, '{"obj":{"_id":1,"name":"Harry","authors":"JK","year":2010,"publisher":"Nort"},"msg":"Book was successfully retrieved from the database"}');
+                    });
+                })
+                
+                //modify the data of this book with PUT
+                it('PUT /books/:id', () => {
+                    let data2 = {
+                        id: 1,
+                        name: "Tim",
+                        authors: "JK",
+                        year: 2010,
+                        publisher: "Nort"
+                    }
+                    request.put({
+                        headers: { 'content-type': 'application/json' },
+                        url: myurl + "/1",
+                        body: JSON.stringify(data2)
+                    }, (error, response, body) => {
+                        assert.strictEqual(body, '{"msg":"Book successfully updated in the database"}');
+                    });
+                })
+
+                //then query this book by id using a GET request
+                it('GET /books/:id', () => {
+                    request.get({
+                        headers: { 'content-type': 'application/json' },
+                        url: myurl + "/1"
+                    }, (error, response, body) => {
+                        assert.strictEqual(body, '{"obj":{"_id":1,"name":"Tim","authors":"JK","year":2010,"publisher":"Nort"},"msg":"Book was successfully retrieved from the database"}');
+                    });
+                })
+                it('DELETE /books/:id', () => {
+                    //then DELETE the same book
+                    request.delete({
+                        headers: { 'content-type': 'application/json' },
+                        url: myurl + "/1",
+                        body: JSON.stringify(data)
+                    }, (error, response, body) => {
+                        assert.strictEqual(body, '{"msg":"The book was successfully deleted"}');
+                    });
+                })
+            })
+
+            it('Success 5 - (Optional) Open', function () {
+
+            });
+            it('Success 6 - (Optional) Open', function () {
+
+            });
+        });
     });
 });

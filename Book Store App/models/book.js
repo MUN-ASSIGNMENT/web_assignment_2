@@ -56,7 +56,7 @@ class Book {
 		});
 	};
 
-	static async delete(collection, id) {
+	 async delete(collection, id) {
 		var id_delete = id;
 		return new Promise(async function (resolve, reject) {
 			/**
@@ -65,7 +65,7 @@ class Book {
 			 */
 			collection.deleteOne({_id: parseInt(id_delete)}, (err, obj) => {
                 if (err) reject(err);
-                console.log(`this book: ${obj} is added to the database`);
+                console.log(`${obj.deletedCount} number of book is deleted in the database`);
                 resolve({msg: "The book was successfully deleted"})
             });
 

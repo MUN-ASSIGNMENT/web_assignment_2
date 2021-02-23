@@ -22,18 +22,28 @@ async function run() {
     var book = new Book(id, name, authors, year, publisher);
     var collection_save = await get_collection();
 
-   /* await book.save(collection_save).then(obj => {
+   await book.save(collection_save).then(obj => {
         console.log(obj);
     }).catch(obj => {
         console.log(obj);
-    }); */
+    });
 
-    let _id = 7
+    let _id = 10
     let name2 = "HarrTTTXXXXXXx"
     let authors2 = "JK"
     let year2 = 2010
     let publisher2 = "Nort"
     await book.update(collection_save, _id, name2, authors2, year2, publisher2).then(obj => {
+        console.log(obj);
+    }).catch(obj => {
+        console.log(obj);
+    });
+    await book.getBooks(collection_save).then(obj => {
+        console.log(obj);
+    }).catch(obj => {
+        console.log(obj);
+    });
+    await book.delete(collection_save, 10).then(obj => {
         console.log(obj);
     }).catch(obj => {
         console.log(obj);

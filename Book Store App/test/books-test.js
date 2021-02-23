@@ -33,10 +33,10 @@ after(async function () {
 });
 
 describe('Testing the Book API', async function () {
-    beforeEach(async () => {
+   /*  beforeEach(async () => {
         const books = db.collection("books");
         books.drop();
-      });
+      }); */
     describe('Testing the Book Model - Simple cases', function () {
         let id = 1
         let name = "Harry"
@@ -86,7 +86,10 @@ describe('Testing the Book API', async function () {
             })
         });
         it('Success 3 - Test the deletetion of a valid Book (Book.delete) - Success Msg test', function () {
-
+            var book = new Book(id, name, authors, year, publisher);
+            return book.delete(bookCollection, 1).then((res) => {
+                assert.strictEqual(res.msg, 'The book was successfully deleted');
+            })
         });
         it('Success 4 - Test the retrieval of a book by id (Book.getBookById) - Success Msg test', function () {
             var book = new Book(id, name, authors, year, publisher);

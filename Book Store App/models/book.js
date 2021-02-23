@@ -11,7 +11,7 @@ class Book {
 
 	isValid() {
 		const rules = {
-			id: 'required|integer',
+			_id: 'required|integer',
 			name: 'required|string',
 			authors: 'required|string',
 			year: 'required|integer',
@@ -36,7 +36,7 @@ class Book {
 		});
 	};
 
-	async update(collection, id, name, authors, year, publisher) {
+	static async update(collection, id, name, authors, year, publisher) {
 		let updateBook = {
 			name: name,
 			authors: authors,
@@ -56,7 +56,7 @@ class Book {
 		});
 	};
 
-	 async delete(collection, id) {
+	static async delete(collection, id) {
 		var id_delete = id;
 		return new Promise(async function (resolve, reject) {
 			/**
@@ -64,7 +64,7 @@ class Book {
 			 * delete: This method should delete your object in the database 
 			 */
 			collection.deleteOne({_id: parseInt(id_delete)}, (err, obj) => {
-                if (err) reject(err);
+                if (err) reject('err');
                 console.log(`${obj.deletedCount} number of book is deleted in the database`);
                 resolve({msg: "The book was successfully deleted"})
             });
@@ -73,7 +73,7 @@ class Book {
 
 	};
 
-	async getBookById(collection, id) {
+	static async getBookById(collection, id) {
 		var id_get = id;
 		return new Promise(async function (resolve, reject) {
 			/**
@@ -88,7 +88,7 @@ class Book {
 		});
 	};
 
-	async getBooks(collection) {
+	static async getBooks(collection) {
 		return new Promise((resolve, reject) => {
 			/**
 			 * Write your code here

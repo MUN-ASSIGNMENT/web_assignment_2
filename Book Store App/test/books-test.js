@@ -57,11 +57,11 @@ describe('Testing the Book API', async function () {
             assert.strictEqual(await book.isValid(), false);
         });
         it('Fail 3 - Test an invalid Book name', async function () {
-            var book = new Book(id, "", authors, year, publisher);
+            var book = new Book(id, 123, authors, year, publisher);
             assert.strictEqual(await book.isValid(), false);
         });
         it('Fail 4 - Test an invalid Book authors', async function () {
-            var book = new Book(id, name, "", year, publisher);
+            var book = new Book(id, name, 123, year, publisher);
             assert.strictEqual(await book.isValid(), false);
         });
         it('Fail 5 - Test Invalid Book year', async function () {
@@ -81,25 +81,25 @@ describe('Testing the Book API', async function () {
             let authors2 = "JK"
             let year2 = 2010
             let publisher2 = "Nort"
-            return book.update(bookCollection, id2, name2, authors2, year2, publisher2).then((res) => {
+            return Book.update(bookCollection, id2, name2, authors2, year2, publisher2).then((res) => {
                 assert.strictEqual(res.msg, 'Book successfully updated in the database');
             })
         });
         it('Success 3 - Test the deletetion of a valid Book (Book.delete) - Success Msg test', function () {
             var book = new Book(id, name, authors, year, publisher);
-            return book.delete(bookCollection, 1).then((res) => {
+            return Book.delete(bookCollection, 1).then((res) => {
                 assert.strictEqual(res.msg, 'The book was successfully deleted');
             })
         });
         it('Success 4 - Test the retrieval of a book by id (Book.getBookById) - Success Msg test', function () {
             var book = new Book(id, name, authors, year, publisher);
-            return book.getBookById(bookCollection, id).then((res) => {
+            return Book.getBookById(bookCollection, id).then((res) => {
                 assert.strictEqual(res.msg, 'Book was successfully retrieved from the database');
             })
         });
         it('Success 5 - Test the retrieval of all books (Book.getBooks) - Success Msg test', function () {
             var book = new Book(id, name, authors, year, publisher);
-            return book.getBooks(bookCollection).then((res) => {
+            return Book.getBooks(bookCollection).then((res) => {
                 assert.strictEqual(res.msg, 'Books were successfully retrieved from the database');
             })
         });
@@ -109,8 +109,10 @@ describe('Testing the Book API', async function () {
             var myurl = 'http://localhost:3000/books';
 
             it('Success 1 - POST /books, DELETE /books/:id', () => {
+                /* You should create a new book using POST, then DELETE the same book. 
+                You should guarantee (using assert) that your book was created and then deleted. */
                 let data = {
-                    id: 2,
+                    id: 1,
                     name: "Harry",
                     authors: "JK",
                     year: 2010,
@@ -123,15 +125,94 @@ describe('Testing the Book API', async function () {
                 }, (error, response, body) => {
                     assert.strictEqual(body, '{"msg":"The book was successfully saved in the database"}');
                 });
+                request.delete({
+                    headers: { 'content-type': 'application/json' },
+                    url: myurl+"/1",
+                    body: JSON.stringify(data)
+                }, (error, response, body) => {
+                    assert.strictEqual(body, '{"msg":"The book was successfully deleted"}');
+                });
             });
             it('Success 2 - POST /books, GET /books (retrieval greater than 1), DELETE /book/:id', function () {
+                /* You should create a new book using POST, then query all books using a GET request, and finally delete the same book. 
+                You should guarantee (using assert) that your book was created, then that the book count is greater than 1, and then it was deleted. */
+                let data = {
+                    id: 1,
+                    name: "Harry",
+                    authors: "JK",
+                    year: 2010,
+                    publisher: "Nort"
+                }
+                request.post({
+                    headers: { 'content-type': 'application/json' },
+                    url: myurl,
+                    body: JSON.stringify(data)
+                }, (error, response, body) => {
+                    assert.strictEqual(body, '{"msg":"The book was successfully saved in the database"}');
+                });
 
+                request.delete({
+                    headers: { 'content-type': 'application/json' },
+                    url: myurl+"/1",
+                    body: JSON.stringify(data)
+                }, (error, response, body) => {
+                    assert.strictEqual(body, '{"msg":"The book was successfully deleted"}');
+                });
             });
             it('Success 3 - POST /books, GET /books/:id, DELETE /book/:id', function () {
+                /* You should create a new book using POST, query this book by id using a GET request, 
+                and finally delete the same book. You should guarantee (using assert) that your book was created, 
+                then that the fields of the retrieved book with GET are all the same, and then it was deleted. */
+                let data = {
+                    id: 1,
+                    name: "Harry",
+                    authors: "JK",
+                    year: 2010,
+                    publisher: "Nort"
+                }
+                request.post({
+                    headers: { 'content-type': 'application/json' },
+                    url: myurl,
+                    body: JSON.stringify(data)
+                }, (error, response, body) => {
+                    assert.strictEqual(body, '{"msg":"The book was successfully saved in the database"}');
+                });
 
+                request.delete({
+                    headers: { 'content-type': 'application/json' },
+                    url: myurl+"/1",
+                    body: JSON.stringify(data)
+                }, (error, response, body) => {
+                    assert.strictEqual(body, '{"msg":"The book was successfully deleted"}');
+                });
             });
             it('Success 4 - POST /books, PUT /books/:id, GET /books/:id, DELETE /book/:id', function () {
+                /* You should create a new book using POST, modify the data of this book with PUT, 
+                then query this book by id using a GET request, and finally delete the same book. 
+                You should guarantee (using assert) that your book was created, 
+                then updated, and when retrieved that the fields of the book changed, and finally that it was deleted. */
+                let data = {
+                    id: 1,
+                    name: "Harry",
+                    authors: "JK",
+                    year: 2010,
+                    publisher: "Nort"
+                }
+                request.post({
+                    headers: { 'content-type': 'application/json' },
+                    url: myurl,
+                    body: JSON.stringify(data)
+                }, (error, response, body) => {
+                    assert.strictEqual(body, '{"msg":"The book was successfully saved in the database"}');
+                });
 
+                request.delete({
+                    headers: { 'content-type': 'application/json' },
+                    url: myurl+"/1",
+                    body: JSON.stringify(data)
+                }, (error, response, body) => {
+                    assert.strictEqual(body, '{"msg":"The book was successfully deleted"}');
+                });
             });
             it('Success 5 - (Optional) Open', function () {
 

@@ -15,6 +15,7 @@ const create = async (req, res) => {
 			throw new Error(err);
 		}
 	} else {
+		console.log(new_book.isValid())
 		res.send('client-side: The Book data you entered is invalid')
 	}
 }

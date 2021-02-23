@@ -12,10 +12,7 @@ async function _get_books_collection(db) {
         throw err;
     }
 };
-beforeEach(async () => {
-    const books = db.collection("books");
-    books.drop();
-  });
+
 // This method runs once and connects to the mongoDB
 before(async function () {
     try {
@@ -36,6 +33,10 @@ after(async function () {
 });
 
 describe('Testing the Book API', async function () {
+    beforeEach(async () => {
+        const books = db.collection("books");
+        books.drop();
+      });
     describe('Testing the Book Model - Simple cases', function () {
         let id = 1
         let name = "Harry"
@@ -88,10 +89,16 @@ describe('Testing the Book API', async function () {
 
         });
         it('Success 4 - Test the retrieval of a book by id (Book.getBookById) - Success Msg test', function () {
-
+            var book = new Book(id, name, authors, year, publisher);
+            return book.getBookById(bookCollection, id).then((res) => {
+                assert.strictEqual(res.msg, 'Book was successfully retrieved from the database');
+            })
         });
         it('Success 5 - Test the retrieval of all books (Book.getBooks) - Success Msg test', function () {
-
+            var book = new Book(id, name, authors, year, publisher);
+            return book.getBooks(bookCollection).then((res) => {
+                assert.strictEqual(res.msg, 'Books were successfully retrieved from the database');
+            })
         });
     });
     describe('Testing the Book API - Complex Cases', () => {

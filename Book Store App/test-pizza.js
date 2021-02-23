@@ -14,7 +14,7 @@ async function get_collection() {
 }
 
 async function run() {
-    let id = 1
+    let id = 10
     let name = "Harry"
     let authors = "JK"
     let year = 2010
@@ -22,33 +22,33 @@ async function run() {
     var book = new Book(id, name, authors, year, publisher);
     var collection_save = await get_collection();
 
-    book.save(collection_save).then(obj => {
+   /* await book.save(collection_save).then(obj => {
+        console.log(obj);
+    }).catch(obj => {
+        console.log(obj);
+    }); */
+
+    let _id = 7
+    let name2 = "HarrTTTXXXXXXx"
+    let authors2 = "JK"
+    let year2 = 2010
+    let publisher2 = "Nort"
+    await book.update(collection_save, _id, name2, authors2, year2, publisher2).then(obj => {
         console.log(obj);
     }).catch(obj => {
         console.log(obj);
     });
-console.log('1')
-    book.getBooks(collection_save).then(obj => {
+    await book.getBooks(collection_save).then(obj => {
         console.log(obj);
     }).catch(obj => {
         console.log(obj);
     });
 
-    let _id = 1
-    let name2 = "HarrTTTXXXXXXx"
-    let authors2 = "JK"
-    let year2 = 2010
-    let publisher2 = "Nort"
-    book.update(collection_save, _id, name2, authors2, year2, publisher2).then(obj => {
+   /*  await book.getBookById(collection_save,1).then(obj => {
         console.log(obj);
     }).catch(obj => {
         console.log(obj);
-    });
-console.log('2')
-    book.getBooks(collection_save).then(obj => {
-        console.log(obj);
-    }).catch(obj => {
-        console.log(obj);
-    });
+    }); */
+
 }
 run();

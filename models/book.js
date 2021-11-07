@@ -21,21 +21,29 @@ class Book {
 		return validation.passes();
 	};
 
+	/**
+	 * save: This method will save your object in the database. 
+	 */
 	async save(collection) {
 		var book = this;
 		return new Promise((resolve, reject) => {
-			/**
-			 * Write your code here
-			 * save: This method will save your object in the database. 
-			 */
 			collection.insertOne(book, (err, obj) => {
+				console.log("obj" + JSON.stringify(obj))
+				
 				if (err) reject(err);
-				console.log(`this book: ${obj.insertedId} is added to the database`);
-				resolve({ msg: 'The book was successfully saved in the database' });
+				if(obj === undefined){
+					reject(err);
+				} else {
+					console.log(`this book: ${obj.insertedId} is added to the database`);
+					resolve({ msg: 'The book was successfully saved in the database' });
+				}
 			});
 		});
 	};
 
+	/**
+	 * update: This method should update your object in the database 
+	 */
 	static async update(collection, id, name, authors, year, publisher) {
 		let updateBook = {
 			name: name,
@@ -44,25 +52,23 @@ class Book {
 			publisher: publisher
 		}
 		return new Promise(async (resolve, reject) => {
-			/**
-			 * Write your code here
-			 * update: This method should update your object in the database 
-			 */
 			collection.updateOne({ "_id": parseInt(id) }, { $set: updateBook }, (err, obj) => {
 				if (err) reject(err);
+				if(obj.modifiedCount === 0){
+					reject(" Book is not update. Please check your body request (if any value is actually updated.). Or {id} on route param was not found.");
+				}
 				console.log(`${obj.modifiedCount} number of book is updated in the database`);
 				resolve({ msg: 'Book successfully updated in the database' });
 			});
 		});
 	};
 
+	/**
+	 * delete: This method should delete your object in the database 
+	 */
 	static async delete(collection, id) {
 		var id_delete = id;
 		return new Promise(async function (resolve, reject) {
-			/**
-			 * Write your code here
-			 * delete: This method should delete your object in the database 
-			 */
 			collection.deleteOne({_id: parseInt(id_delete)}, (err, obj) => {
                 if (err) reject('err');
                 console.log(`${obj.deletedCount} number of book is deleted in the database`);
@@ -78,31 +84,32 @@ class Book {
 
 	};
 
+	/**
+	 * getBookById: This method should retrieve all book data from the database using the id 
+	 */
 	static async getBookById(collection, id) {
 		var id_get = id;
 		return new Promise(async function (resolve, reject) {
-			/**
-			 * Write your code here
-			 * getBookById: This method should retrieve all book data from the database using the id 
-			 */
-			collection.findOne({}, { "_id": parseInt(id_get) }, (err, obj) => {
+			collection.findOne({ "_id": parseInt(id_get) }, (err, obj) => {
 				if (err) reject(err);
+				if (obj === null){
+					reject(" Unable to find book with id: " + id_get);
+				}
 				console.log(`this book: ${JSON.stringify(obj)} is retrieved from the database`);
-				resolve({ obj: obj, msg: 'Book was successfully retrieved from the database' });
+				resolve({ book: obj, msg: 'Book was successfully retrieved from the database' });
 			});
 		});
 	};
 
+	/**
+	 * getBooks: This method should retrieve all books from the database.
+	 */
 	static async getBooks(collection) {
-		return new Promise((resolve, reject) => {
-			/**
-			 * Write your code here
-			 * getBooks: This method should retrieve all books from the database.
-			 */
+		return new Promise(async (resolve, reject) => {
 			collection.find().toArray((err, obj) => {
 				if (err) reject(err);
 				console.log(`this books: ${JSON.stringify(obj)} is retrieved from the database`);
-				resolve({ obj: obj, msg: 'Books were successfully retrieved from the database' });
+				resolve({ books: obj, msg: 'Books were successfully retrieved from the database' });
 			});
 		});
 	};

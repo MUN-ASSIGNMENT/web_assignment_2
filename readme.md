@@ -69,8 +69,15 @@ Here is some example on what params, body, - url needed for each purpose.
 ## Demo
 ### In Postman:
 ### Add a new book. (POST Method)
-
+![Create Book](./readme_assets/CreateBook.gif)
 ### Retrieve the information of a book by id. (GET Method)
+![Get a Book](./readme_assets/GetABook.gif)
 ### List all books. (GET Method)
+![Get Books](./readme_assets/GetBooks.gif)
 ### Update a book. (PUT Method)
+![Update a Book](./readme_assets/UpdateBook.gif)
 ### Delete a book. (DELETE Method)
+![Delete a Book](./readme_assets/DeleteBook.gif)
+
+### Unit Test:
+![Unit Tests](./readme_assets/Test.gif)

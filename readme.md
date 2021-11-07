@@ -57,7 +57,7 @@ Here is some example on what params, body, - url needed for each purpose.
     a. run `mongo`
 
     b. in mongo shell: 
-    
+
         A. run `use my-library`
 
         B. run `db.createCollection('books')`, and make sure it retun "{ "ok" : 1 }", 
@@ -65,3 +65,12 @@ Here is some example on what params, body, - url needed for each purpose.
 
     c. in `node app.js` terminal, re-run `node app.js`
     d. then run `npm test`
+
+## Demo
+### In Postman:
+### Add a new book. (POST Method)
+
+### Retrieve the information of a book by id. (GET Method)
+### List all books. (GET Method)
+### Update a book. (PUT Method)
+### Delete a book. (DELETE Method)

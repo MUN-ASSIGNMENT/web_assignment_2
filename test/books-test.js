@@ -85,16 +85,16 @@ describe('Testing the Book API', async function () {
                 assert.strictEqual(res.msg, 'Book successfully updated in the database');
             })
         });
-        it('Success 3 - Test the deletetion of a valid Book (Book.delete) - Success Msg test', function () {
-            var book = new Book(id, name, authors, year, publisher);
-            return Book.delete(bookCollection, 1).then((res) => {
-                assert.strictEqual(res.msg, 'The book was successfully deleted');
-            })
-        });
-        it('Success 4 - Test the retrieval of a book by id (Book.getBookById) - Success Msg test', function () {
+        it('Success 3 - Test the retrieval of a book by id (Book.getBookById) - Success Msg test', function () {
             var book = new Book(id, name, authors, year, publisher);
             return Book.getBookById(bookCollection, id).then((res) => {
                 assert.strictEqual(res.msg, 'Book was successfully retrieved from the database');
+            })
+        });
+        it('Success 4 - Test the deletetion of a valid Book (Book.delete) - Success Msg test', function () {
+            var book = new Book(id, name, authors, year, publisher);
+            return Book.delete(bookCollection, 1).then((res) => {
+                assert.strictEqual(res.msg, 'The book was successfully deleted');
             })
         });
         it('Success 5 - Test the retrieval of all books (Book.getBooks) - Success Msg test', function () {
@@ -148,14 +148,14 @@ describe('Testing the Book API', async function () {
                         assert.strictEqual(body, '{"msg":"The book was successfully saved in the database"}');
                     });
                 })
-                /* it('GET /books (retrieval greater than 1', () => {
+                it('GET /books (retrieval greater than 1', () => {
                     request.get({
                         headers: { 'content-type': 'application/json' },
                         url: myurl + "/1"
                     }, (error, response, body) => {
-                        assert.strictEqual(body, '{"obj":{"_id":1,"name":"Harry","authors":"JK","year":2010,"publisher":"Nort"},"msg":"Book was successfully retrieved from the database"}');
+                        assert.strictEqual(body, '{"book":{"_id":1,"name":"Harry","authors":"JK","year":2010,"publisher":"Nort"},"msg":"Book was successfully retrieved from the database"}');
                     });
-                }) */
+                })
                 it('DELETE /books/:id', () => {
                     //then DELETE the same book
                     request.delete({
@@ -189,7 +189,7 @@ describe('Testing the Book API', async function () {
                         headers: { 'content-type': 'application/json' },
                         url: myurl + "/1"
                     }, (error, response, body) => {
-                        assert.strictEqual(body, '{"obj":{"_id":1,"name":"Harry","authors":"JK","year":2010,"publisher":"Nort"},"msg":"Book was successfully retrieved from the database"}');
+                        assert.strictEqual(body, '{"book":{"_id":1,"name":"Harry","authors":"JK","year":2010,"publisher":"Nort"},"msg":"Book was successfully retrieved from the database"}');
                     });
                 })
 
@@ -223,7 +223,7 @@ describe('Testing the Book API', async function () {
                         headers: { 'content-type': 'application/json' },
                         url: myurl + "/1"
                     }, (error, response, body) => {
-                        assert.strictEqual(body, '{"obj":{"_id":1,"name":"Harry","authors":"JK","year":2010,"publisher":"Nort"},"msg":"Book was successfully retrieved from the database"}');
+                        assert.strictEqual(body, '{"book":{"_id":1,"name":"Harry","authors":"JK","year":2010,"publisher":"Nort"},"msg":"Book was successfully retrieved from the database"}');
                     });
                 })
                 
@@ -251,7 +251,7 @@ describe('Testing the Book API', async function () {
                         headers: { 'content-type': 'application/json' },
                         url: myurl + "/1"
                     }, (error, response, body) => {
-                        assert.strictEqual(body, '{"obj":{"_id":1,"name":"Tim","authors":"JK","year":2010,"publisher":"Nort"},"msg":"Book was successfully retrieved from the database"}');
+                        assert.strictEqual(body, '{"book":{"_id":1,"name":"Tim","authors":"JK","year":2010,"publisher":"Nort"},"msg":"Book was successfully retrieved from the database"}');
                     });
                 })
                 it('DELETE /books/:id', () => {
@@ -320,7 +320,7 @@ describe('Testing the Book API', async function () {
                         headers: { 'content-type': 'application/json' },
                         url: myurl + "/1"
                     }, (error, response, body) => {
-                        assert.strictEqual(body, '{"obj":{"_id":1,"name":"Tim","authors":"JK","year":2010,"publisher":"Nort"},"msg":"Book was successfully retrieved from the database"}');
+                        assert.strictEqual(body, '{"book":{"_id":1,"name":"Tim","authors":"JK","year":2010,"publisher":"Nort"},"msg":"Book was successfully retrieved from the database"}');
                     });
                 })
 
@@ -342,20 +342,6 @@ describe('Testing the Book API', async function () {
                         body: JSON.stringify(data)
                     }, (error, response, body) => {
                         assert.strictEqual(body, '{"msg":"The book was successfully deleted"}');
-                    });
-                })
-            });
-            
-            describe('Success 6 - DELETE /books/:id', () => {
-                
-                it('DELETE /books/:id', () => {
-                    //then DELETE the same book
-                    request.delete({
-                        headers: { 'content-type': 'application/json' },
-                        url: myurl + "/1",
-                        body: JSON.stringify(data)
-                    }, (error, response, body) => {
-                        assert.strictEqual(body, '{"msg":"No book is deleted. The database is empty"}');
                     });
                 })
             });

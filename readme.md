@@ -47,11 +47,16 @@ Here is some example on what params, body, - url needed for each purpose.
 }
 ```
 
+![Create Book](./readme_assets/CreateBook.gif)
 ### Retrieve the information of a book by id. (GET Method)
 - url: 'http://localhost:3000/books/{id}'
 
+![Get a Book](./readme_assets/GetABook.gif)
+
 ### List all books. (GET Method)
 - url: 'http://localhost:3000/books'
+
+![Get Books](./readme_assets/GetBooks.gif)
 
 ### Update a book. (PUT Method)
 - url: 'http://localhost:3000/books/{id}'
@@ -65,9 +70,12 @@ Here is some example on what params, body, - url needed for each purpose.
     "publisher": "testPublisher"
 }
 ```
+![Update a Book](./readme_assets/UpdateBook.gif)
 
 ### Delete a book. (DELETE Method)
 - url: 'http://localhost:3000/books/{id}'
+
+![Delete a Book](./readme_assets/DeleteBook.gif)
 
 
 ## To run the test
@@ -84,20 +92,10 @@ Here is some example on what params, body, - url needed for each purpose.
         B. run `db.createCollection('books')`, and make sure it retun "{ "ok" : 1 }", 
            else: run `db.books.drop()` then `db.createCollection('books')`
 
-    c. in `node app.js` terminal, re-run `node app.js`
+    c. in another terminal, re-run `node app.js`
+
     d. then run `npm test`
 
 ## Demo
-### In Postman:
-### Add a new book. (POST Method)
-![Create Book](./readme_assets/CreateBook.gif)
-### Retrieve the information of a book by id. (GET Method)
-![Get a Book](./readme_assets/GetABook.gif)
-### List all books. (GET Method)
-![Get Books](./readme_assets/GetBooks.gif)
-### Update a book. (PUT Method)
-![Update a Book](./readme_assets/UpdateBook.gif)
-### Delete a book. (DELETE Method)
-![Delete a Book](./readme_assets/DeleteBook.gif)
 ### Unit Test:
 ![Unit Tests](./readme_assets/Test.gif)

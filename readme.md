@@ -29,7 +29,7 @@ Prerequisite:
     else: run `db.books.drop()` then `db.createCollection('books')`
 5. open a new terminal and locate to web_assignment_2 directory, then run `node app.js`
 
-## To communicate with this API
+## To communicate with this API (this api is different from the web_assignment_1 or web_assignment_3, and is being modified a little)
 You will need [Postman](https://www.postman.com/downloads/).
 
 Here is some example on what params, body, - url needed for each purpose.

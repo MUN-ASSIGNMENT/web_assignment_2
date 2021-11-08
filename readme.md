@@ -34,6 +34,8 @@ You will need [Postman](https://www.postman.com/downloads/).
 
 Here is some example on what params, body, - url needed for each purpose.
 
+*!Note! This example run server on port 3000. If you run in different port, make sure you modified the url accordingly!*
+
 ### Add a new book. (POST Method)
 - url: 'http://localhost:3000/books'
 - body request example: 

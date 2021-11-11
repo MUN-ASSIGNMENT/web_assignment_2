@@ -1,6 +1,6 @@
 
 # Book Store App Projects 
-In COMP3100 course, we have 3 individual assignments. 
+In COMP3100 course, I have 3 individual assignments. 
 Name As: web_assignment_1, web_assignment_2, and web_assignment_3.
 
 ### [web_assignment_1](https://github.com/yeeteing/web_assignment_1)
